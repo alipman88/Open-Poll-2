@@ -2,7 +2,10 @@ FROM ruby:2.6.3
 RUN apt-get update -qq && \
     apt-get install -y mysql-client && \
     curl -sL https://deb.nodesource.com/setup_6.x | bash && \
-    apt-get install nodejs
+    apt-get install nodejs && \
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    apt update && apt-get install yarn
 
 RUN mkdir /railsapp
 WORKDIR /railsapp
@@ -12,6 +15,3 @@ RUN bundle install
 COPY . /railsapp
 
 EXPOSE 3000
-
-# Start the main process.
-CMD ["rails", "server", "-b", "0.0.0.0"]

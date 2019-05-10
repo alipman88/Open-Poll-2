@@ -28,3 +28,12 @@
 
 # Ignore environment variables
 .env
+
+# Ignore compiled Webpacker assets
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+>>>>>>> 6e3e6aa... install yarn & update Dockerfile
