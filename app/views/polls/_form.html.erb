@@ -1,0 +1,122 @@
+<%= form_with(model: poll, local: true) do |form| %>
+  <% if poll.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(poll.errors.count, "error") %> prohibited this poll from being saved:</h2>
+
+      <ul>
+        <% poll.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :slug %>
+    <%= form.text_field :slug %>
+  </div>
+
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :subtitle %>
+    <%= form.text_field :subtitle %>
+  </div>
+
+  <div class="field">
+    <%= form.label :logo %>
+    <%= form.file_field :logo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :end_voting_at %>
+    <%= form.datetime_select :end_voting_at %>
+  </div>
+
+  <div class="field">
+    <%= form.label :show_results %>
+    <%= form.check_box :show_results %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sms_disclaimer %>
+    <%= form.text_area :sms_disclaimer %>
+  </div>
+
+  <div class="field">
+    <%= form.label :results_html %>
+    <%= form.text_area :results_html %>
+  </div>
+
+  <div class="field">
+    <%= form.label :donate_url %>
+    <%= form.text_field :donate_url %>
+  </div>
+
+  <div class="field">
+    <%= form.label :twitter_message %>
+    <%= form.text_field :twitter_message %>
+  </div>
+
+  <div class="field">
+    <%= form.label :index_share_title %>
+    <%= form.text_field :index_share_title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :index_share_description %>
+    <%= form.text_field :index_share_description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :vote_share_title %>
+    <%= form.text_field :vote_share_title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :vote_share_description %>
+    <%= form.text_field :vote_share_description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :promote_share_title %>
+    <%= form.text_field :promote_share_title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :promote_share_description %>
+    <%= form.text_field :promote_share_description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :after_action_email_fromline %>
+    <%= form.text_field :after_action_email_fromline %>
+  </div>
+
+  <div class="field">
+    <%= form.label :after_action_email_subject %>
+    <%= form.text_field :after_action_email_subject %>
+  </div>
+
+  <div class="field">
+    <%= form.label :after_action_email_body %>
+    <%= form.text_area :after_action_email_body %>
+  </div>
+
+  <div class="field">
+    <%= form.label :actionkit_domain %>
+    <%= form.text_field :actionkit_domain %>
+  </div>
+
+  <div class="field">
+    <%= form.label :actionkit_page %>
+    <%= form.text_field :actionkit_page %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

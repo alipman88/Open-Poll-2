@@ -1,0 +1,2 @@
+json.extract! poll, :id, :slug, :title, :subtitle, :end_voting_at, :show_results, :results_html, :donate_url, :twitter_message, :index_share_title, :index_share_description, :vote_share_title, :vote_share_description, :promote_share_title, :promote_share_description, :after_action_email_fromline, :after_action_email_subject, :after_action_email_body, :actionkit_domain, :actionkit_page, :created_at, :updated_at
+json.url poll_url(poll, format: :json)

@@ -1,0 +1,99 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Slug:</strong>
+  <%= @poll.slug %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @poll.title %>
+</p>
+
+<p>
+  <strong>Subtitle:</strong>
+  <%= @poll.subtitle %>
+</p>
+
+<p>
+  <strong>End voting at:</strong>
+  <%= @poll.end_voting_at %>
+</p>
+
+<p>
+  <strong>Show results:</strong>
+  <%= @poll.show_results %>
+</p>
+
+<p>
+  <strong>Results html:</strong>
+  <%= @poll.results_html %>
+</p>
+
+<p>
+  <strong>Donate url:</strong>
+  <%= @poll.donate_url %>
+</p>
+
+<p>
+  <strong>Twitter message:</strong>
+  <%= @poll.twitter_message %>
+</p>
+
+<p>
+  <strong>Index share title:</strong>
+  <%= @poll.index_share_title %>
+</p>
+
+<p>
+  <strong>Index share description:</strong>
+  <%= @poll.index_share_description %>
+</p>
+
+<p>
+  <strong>Vote share title:</strong>
+  <%= @poll.vote_share_title %>
+</p>
+
+<p>
+  <strong>Vote share description:</strong>
+  <%= @poll.vote_share_description %>
+</p>
+
+<p>
+  <strong>Promote share title:</strong>
+  <%= @poll.promote_share_title %>
+</p>
+
+<p>
+  <strong>Promote share description:</strong>
+  <%= @poll.promote_share_description %>
+</p>
+
+<p>
+  <strong>After action email fromline:</strong>
+  <%= @poll.after_action_email_fromline %>
+</p>
+
+<p>
+  <strong>After action email subject:</strong>
+  <%= @poll.after_action_email_subject %>
+</p>
+
+<p>
+  <strong>After action email body:</strong>
+  <%= @poll.after_action_email_body %>
+</p>
+
+<p>
+  <strong>Actionkit domain:</strong>
+  <%= @poll.actionkit_domain %>
+</p>
+
+<p>
+  <strong>Actionkit page:</strong>
+  <%= @poll.actionkit_page %>
+</p>
+
+<%= link_to 'Edit', edit_poll_path(@poll) %> |
+<%= link_to 'Back', polls_path %>
