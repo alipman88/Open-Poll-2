@@ -1,4 +1,6 @@
-class PollsController < ApplicationController
+class Admin::PollsController < ApplicationController
+  http_basic_authenticate_with name: ENV['ADMIN_USER'], password: ENV['ADMIN_PASSWORD']
+  layout 'admin'
   before_action :set_poll, only: [:show, :edit, :update, :destroy]
 
   # GET /polls
@@ -28,7 +30,7 @@ class PollsController < ApplicationController
 
     respond_to do |format|
       if @poll.save
-        format.html { redirect_to @poll, notice: 'Poll was successfully created.' }
+        format.html { redirect_to admin_polls_path, notice: 'Poll was successfully created.' }
         format.json { render :show, status: :created, location: @poll }
       else
         format.html { render :new }
@@ -42,7 +44,7 @@ class PollsController < ApplicationController
   def update
     respond_to do |format|
       if @poll.update(poll_params)
-        format.html { redirect_to @poll, notice: 'Poll was successfully updated.' }
+        format.html { redirect_to admin_polls_path, notice: 'Poll was successfully updated.' }
         format.json { render :show, status: :ok, location: @poll }
       else
         format.html { render :edit }
@@ -56,7 +58,7 @@ class PollsController < ApplicationController
   def destroy
     @poll.destroy
     respond_to do |format|
-      format.html { redirect_to polls_url, notice: 'Poll was successfully destroyed.' }
+      format.html { redirect_to admin_polls_path, notice: 'Poll was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -69,6 +71,6 @@ class PollsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def poll_params
-      params.require(:poll).permit(:slug, :title, :subtitle, :end_voting_at, :show_results, :results_html, :donate_url, :twitter_message, :index_share_title, :index_share_description, :vote_share_title, :vote_share_description, :promote_share_title, :promote_share_description, :after_action_email_fromline, :after_action_email_subject, :after_action_email_body, :actionkit_domain, :actionkit_page)
+      params.require(:poll).permit!
     end
 end
