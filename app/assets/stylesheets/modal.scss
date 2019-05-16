@@ -8,24 +8,69 @@
   right: 5%;
   z-index: 999;
   background-color: #FFF;
-}
 
-#modal-content img {
-  float: left;
-  margin: 0px 12px 8px 0px;
-  width: 120px;
-  max-width: 33%;
-  border-radius: 12px;
-}
+  #modalVote {
+    max-width: 100%;
+    min-width: 50%;
+    height: auto;
+    padding: 12px;
+    white-space: normal;
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: -0.1px;
+  }
 
-#modal-vote {
-  letter-spacing: 0px;
-  font-weight: bold;
-  padding: 0 12px;
-}
+  #modalTitle {
+    font-size: 120%;
+    margin-bottom: 0.5em;
+    text-align: center;
+    font-weight: bold;
+    color: #0058A0;
+  }
 
-#modal-title {
-  font-weight: bold;
+  #modalImage img {
+    float: left;
+    margin: 0px 12px 8px 0px;
+    width: 120px;
+    max-width: 33%;
+    border-radius: 12px;
+  }
+
+  p {
+    margin-bottom: 0.5em;
+  }
+
+  .x {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 23px;
+    height: 23px;
+    background-color: #FFF;
+    cursor: pointer;
+  }
+
+  .x::before, .x::after {
+    position: absolute;
+    top: 10px;
+    left: 5px;
+    width: 13px;
+    height: 3px;
+    content: "";
+    background-color: #999;
+  }
+
+  .x::before {
+    -ms-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+  }
+
+  .x::after {
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
 }
 
 @media screen and (min-width: 750px) {

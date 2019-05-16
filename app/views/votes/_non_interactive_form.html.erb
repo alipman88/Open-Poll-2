@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="five columns u-pull-right">
+    <%= form_with(model: vote, url: request.fullpath, local: true) do |form| %>
+      <% if vote.errors.any? %>
+        <div id="error_explanation">
+          <label><%= pluralize(vote.errors.keys.count, "error") %> prohibited this vote from being saved:</label>
+
+          <ul>
+            <% vote.errors.messages.values.each do |messages| %>
+              <li><%= messages.first %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= form.fields_for :responses do |r| %>
+        <label><%= r.object.question.question %></label>
+        <div><%= r.text_field :choices, multiple: true, value: r.object.choices.to_a.first, placeholder: 'FIRST CHOICE' %></div>
+        <div><%= r.text_field :choices, multiple: true, value: r.object.choices.to_a.second, placeholder: 'SECOND CHOICE' %></div>
+        <div><%= r.text_field :choices, multiple: true, value: r.object.choices.to_a.third, placeholder: 'THIRD CHOICE' %></div>
+        <%= r.hidden_field :question_id %>
+      <% end %>
+
+      <%= form.label :name %>
+      <%= form.text_field :name %>
+      <%= form.label :zip %>
+      <%= form.text_field :zip %>
+      <%= form.label :email %>
+      <%= form.text_field :email %>
+      <%= form.label :phone %>
+      <%= form.text_field :phone %>
+
+      <% if @poll.sms_disclaimer.present? %>
+        <p><label style="font-size: 80%; font-weight: normal;"><%= form.check_box :sms_opt_in %> <%= @poll.sms_disclaimer.html_safe %></label></p>
+      <% end %>
+
+      <div class="actions">
+        <%= form.submit "Submit", class: "button-blue" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="seven columns u-pull-left">
+    <% @poll.questions.each do |question| %>
+      <label><%= question.field_name %></label>
+
+      <ul>
+        <% question.answers.select{ |answer| answer.show_on_ballot }.shuffle.each do |answer| %>
+          <li>
+            <%= link_to [answer.field_value, answer.caption].reject(&:blank?).join(", "), "/#{ @poll.slug }/answers/#{ answer.id }", target: "_blank" %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Domains</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Domain</th>
+      <th>Slug</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @domains.each do |domain| %>
+      <tr>
+        <td><%= domain.domain %></td>
+        <td><%= domain.slug %></td>
+        <td><%= link_to 'Edit', edit_admin_domain_path(domain) %></td>
+        <td><%= link_to 'Destroy', [:admin, domain], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Domain', new_admin_domain_path %>
