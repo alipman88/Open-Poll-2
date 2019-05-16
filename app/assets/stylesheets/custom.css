@@ -1,0 +1,49 @@
+/* GENERAL */
+body { font-family: "Montserrat","Gotham","Futura","Avenir","Futura","Trebuchet MS",Helvetica,Arial,sans-serif; }
+a { text-decoration: none; color: inherit; }
+
+/* ATOMIC CLASSES */
+.no-select {
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}
+
+/* HEADER */
+#header { padding: 12px 0; line-height: 1.2; text-align: center; }
+#logo { height: 40px; }
+#title-wrapper { font-size: 100%; }
+#title-wrapper > #main-title { font-size: 150%; font-weight: 700; }
+#title-wrapper > #sub-title { font-weight: 200; }
+
+/* Larger than mobile */
+@media (min-width: 400px) {}
+
+/* Larger than phablet (also point when grid becomes active) */
+@media (min-width: 550px) {
+  #logo-wrapper, #title-wrapper { display: inline-block; vertical-align: middle; }
+}
+
+/* Larger than tablet */
+@media (min-width: 750px) {
+  #logo { height: 70px; }
+  #title-wrapper { font-size: 120%; }
+}
+
+/* Larger than desktop */
+@media (min-width: 1000px) {
+  #title-wrapper { font-size: 160%; }
+}
+
+/* Larger than Desktop HD */
+@media (min-width: 1200px) {
+}
+
+/* FOOTER */
+#footer { font-size: 90%; text-align: center; }
+#footer > * { margin-bottom: 18px; }
+#disclaimer, #contact { color: #004090; }
+#disclaimer { padding: 12px; border: 1px solid #004090; }
+#dfa-credit img { width: 200px; }

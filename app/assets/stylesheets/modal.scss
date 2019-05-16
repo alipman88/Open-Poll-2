@@ -1,0 +1,65 @@
+#modal {
+  width: 90%;
+  top: 100%;
+  position: fixed;
+  max-height: 90%;
+  overflow-y: auto;
+  left: 5%;
+  right: 5%;
+  z-index: 999;
+  background-color: #FFF;
+}
+
+#modal-content img {
+  float: left;
+  margin: 0px 12px 8px 0px;
+  width: 120px;
+  max-width: 33%;
+  border-radius: 12px;
+}
+
+#modal-vote {
+  letter-spacing: 0px;
+  font-weight: bold;
+  padding: 0 12px;
+}
+
+#modal-title {
+  font-weight: bold;
+}
+
+@media screen and (min-width: 750px) {
+  #modal {
+    left: 50%;
+    width: 700px;
+    margin-left: -350px;
+  }
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 998;
+  background-color: rgba(0,0,0,0.5);
+  cursor: default;
+}
+
+.video-wrapper {
+  display: block;
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  padding-top: 25px;
+  height: 0;
+  margin-top: 12px;
+}
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
