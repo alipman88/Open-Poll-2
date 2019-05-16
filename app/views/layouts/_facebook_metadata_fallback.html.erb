@@ -1,0 +1,14 @@
+<%# Directly prepending Facebook share content within a hidden div to a page's body element sometimes corrects weird behavior on FB's end %>
+
+<div style="display: none;">
+  <% if @parent || request.fullpath.split('/').last == 's' %>
+    <%= @poll.vote_share_description %>">
+  <% elsif params['i_voted_for'] %>
+    <% liquid_binding = {'candidate' => params['i_voted_for'] } %>
+    <%= Liquid::Template.parse(@poll.promote_share_description).render(liquid_binding) %>
+  <% elsif params['controller'] == 'results' %>
+    <%= @poll.results_share_description %>
+  <% else %>
+    <%= @poll.vote_share_description %>
+  <% end %>
+</div>

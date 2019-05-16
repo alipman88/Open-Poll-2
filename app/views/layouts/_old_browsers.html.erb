@@ -1,0 +1,23 @@
+<!--[if lt IE 9]>
+  <style>
+    body { padding-top: 0;}
+    .ribbon, #candidates { display: none !important; }
+    #ie_header { background: url(<%= image_url 'ie_banner_bkg.gif' %>) repeat-x; }
+  </style>
+  <div id="ie_header"><img src="<%= image_url 'ie_banner.png' %>" width="1024" /></div>
+  <div id="ie_body" >
+    <p >You're using an outdated version of Internet Explorer.<br/>To ensure that this web site displays correctly, please update to a more modern browser.</p>
+    <div id="ie_icon_list">
+      <div class="icon"><a href="https://www.google.com/chrome/"><img src="<%= image_url 'chrome.png' %>" /><br/>Download<br/>Google Chrome</a></div>
+      <div  class="icon"><a href="https://www.mozilla.org/en-US/firefox/new/"><img src="<%= image_url 'firefox.png' %>" /><br/>Download<br/>Mozilla Firefox</a></div>  
+      <div style="clear: all"></div>
+    </div>
+  </div>
+<![endif]-->  
+
+<noscript>
+  <div id="no_script"><p>This page uses Javascript. Your browser either
+  doesn't support Javascript or you have it turned off.
+  To see this page as it is meant to appear please use
+  a Javascript enabled browser.</p></div>
+</noscript>
