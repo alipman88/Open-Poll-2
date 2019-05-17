@@ -11,6 +11,8 @@
     </div>
   <% end %>
 
+  <h5>URL Path & Header</h5>
+
   <div class="field">
     <%= form.label :slug %>
     <%= form.text_field :slug %>
@@ -36,14 +38,18 @@
     <%= form.text_field :logo_url %>
   </div>
 
+  <hr/>
+
+  <h5>Voting & Results</h5>
+
   <div class="field">
-    <%= form.label :end_voting_at %>
+    <%= form.label :end_voting_at, "End voting at (UTC)" %>
     <%= form.datetime_select :end_voting_at %>
   </div>
 
   <div class="field">
-    <%= form.label :show_results %>
     <%= form.check_box :show_results %>
+    <%= form.label :show_results %>
   </div>
 
   <div class="field">
@@ -55,6 +61,10 @@
     <%= form.label :results_html %>
     <%= form.text_area :results_html %>
   </div>
+
+  <hr/>
+
+  <h5>After-action & Sharing</h5>
 
   <div class="field">
     <%= form.label :donate_url %>
@@ -96,6 +106,10 @@
     <%= form.text_field :promote_share_description %>
   </div>
 
+  <hr/>
+
+  <h5>Confirmation Email</h5>
+
   <div class="field">
     <%= form.label :after_action_email_fromline %>
     <%= form.text_field :after_action_email_fromline %>
@@ -110,6 +124,10 @@
     <%= form.label :after_action_email_body %>
     <%= form.text_area :after_action_email_body %>
   </div>
+
+  <hr/>
+
+  <h5>ActionKit Integration</h5>
 
   <div class="field">
     <%= form.label :actionkit_domain %>

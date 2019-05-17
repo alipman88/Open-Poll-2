@@ -2,3 +2,8 @@
  *= require normalize
  *= require skeleton
  */
+
+/* FORMS */
+fieldset { padding: 12px; background-color: #fff; border: 1px solid #ccc; }
+input[type="text"], textarea { width: 100%; }
+input[type='checkbox'] + label { display: inline-block; }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_16_202545) do
+ActiveRecord::Schema.define(version: 2019_05_17_164318) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -71,5 +71,19 @@ ActiveRecord::Schema.define(version: 2019_05_16_202545) do
     t.index ["slug"], name: "index_polls_on_slug"
   end
 
+  create_table "questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "poll_id", null: false
+    t.integer "position", limit: 1
+    t.string "slug"
+    t.string "field_name"
+    t.string "question", limit: 511
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["poll_id"], name: "index_questions_on_poll_id"
+    t.index ["position"], name: "index_questions_on_position"
+    t.index ["slug"], name: "index_questions_on_slug"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "questions", "polls"
 end

@@ -1,0 +1,25 @@
+<%= form_with(model: [:admin, poll], local: true) do |form| %>
+  <% if poll.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(poll.errors.count, "error") %> prohibited this poll from being saved:</h2>
+
+      <ul>
+        <% poll.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div id="questions" class="sortable">
+    <%= form.fields_for :questions do |q| %>
+      <%= render 'question_fields', f: q %>
+    <% end %>
+
+    <p><%= link_to_add_association 'add question', form, :questions %></p>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

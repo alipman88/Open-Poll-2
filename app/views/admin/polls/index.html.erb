@@ -7,10 +7,9 @@
     <tr>
       <th>Slug</th>
       <th>Title</th>
-      <th>Subtitle</th>
       <th>End voting at</th>
       <th>Show results</th>
-      <th colspan="3"></th>
+      <th></th>
     </tr>
   </thead>
 
@@ -18,13 +17,15 @@
     <% @polls.each do |poll| %>
       <tr>
         <td><%= poll.slug %></td>
-        <td><%= poll.title %></td>
-        <td><%= poll.subtitle %></td>
+        <td><%= link_to poll.title, "/#{poll.slug}" %></td>
         <td><%= poll.end_voting_at %></td>
         <td><%= poll.show_results %></td>
-        <td><%= link_to 'Show', "/#{poll.slug}" %></td>
-        <td><%= link_to 'Edit', edit_admin_poll_path(poll) %></td>
-        <td><%= link_to 'Destroy', [:admin, poll], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+          <%= link_to 'Edit', edit_admin_poll_path(poll) %> |
+          <%= link_to 'Q\'s', admin_poll_questions_path(poll) %> &
+          <%= link_to 'A\'s', admin_poll_questions_path(poll) %> |
+          <%= link_to 'Destroy', [:admin, poll], method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
       </tr>
     <% end %>
   </tbody>
