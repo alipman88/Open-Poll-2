@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Answers</h1>
+
+<% @poll.questions.each do |question| %>
+  <h5><%= question.question %></h5>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Field value</th>
+        <th>Caption</th>
+        <th>Show on ballot</th>
+        <th>Show in results</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% question.answers.each do |answer| %>
+        <tr>
+          <td><% if answer.image.attached? %><%= image_tag answer.image.variant(resize_to_limit: [50, 50]) %><% end %></td>
+          <td><%= answer.field_value %></td>
+          <td><%= answer.caption %></td>
+          <td><%= answer.show_on_ballot %></td>
+          <td><%= answer.show_in_results %></td>
+          <td>
+            <%= link_to 'Edit', edit_admin_poll_question_answer_path(@poll, question, answer) %> |
+            <%= link_to 'Destroy', [:admin, @poll, question, answer], method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <p><%= link_to 'New Answer', new_admin_poll_question_answer_path(@poll, question) %></p>
+<% end %>

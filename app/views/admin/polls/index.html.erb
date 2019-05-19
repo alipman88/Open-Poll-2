@@ -23,7 +23,7 @@
         <td>
           <%= link_to 'Edit', edit_admin_poll_path(poll) %> |
           <%= link_to 'Q\'s', admin_poll_questions_path(poll) %> &
-          <%= link_to 'A\'s', admin_poll_questions_path(poll) %> |
+          <%= link_to 'A\'s', admin_poll_answers_path(poll) %> |
           <%= link_to 'Destroy', [:admin, poll], method: :delete, data: { confirm: 'Are you sure?' } %>
         </td>
       </tr>

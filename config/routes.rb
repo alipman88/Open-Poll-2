@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   namespace :admin do
     resources :polls do
-      resources :questions
+      resources :answers
+
+      resources :questions do
+        resources :answers
+      end
     end
 
     resources :domains
