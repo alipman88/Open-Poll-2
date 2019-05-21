@@ -1,1 +1,176 @@
-new.html.erb
+<% if @poll.open? %>
+<script>
+  // hide non-interactive form on load
+  if (getParameterByName("js") != "false") {
+    var style = $('<style>#non-interactive { display: none; }</style>');
+    $('html > head').append(style);
+  }
+</script>
+
+<div id="non-interactive">
+  <div class="red gradient" style="height: 15px;"></div>
+
+  <div class="container" style="margin-top: 1em;">
+    <%= render "non_interactive_form", vote: @vote %>
+  </div>
+</div>
+
+<div id="interactive" style="display: none;">
+  <%= form_with(model: @vote, url: request.fullpath, local: true) do |form| %>
+    <div id="sticky-header">
+      <div class="red gradient" style="height: 15px;"></div>
+
+      <div id="drop-div-wrapper" style="position: relative;">
+        <h4 id="instructions" style="position: absolute; top: 50%; left: 0%; right: 0%; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%); margin: auto; text-align: center; color: #999;">Drag and drop your top choices from the list below into this area.</h4>
+
+        <div style="line-height: 0;">
+          <%= form.fields_for :responses do |r| %>
+            <%= content_tag :div, id: "drop-div-#{ r.object.question_id }", class: "drop-div no-select", style: "display: none; visibility: hidden;" do %><!--
+           --><div class="droppable-wrapper"><div class="droppable frst">
+                <% if r.object.try(:choices).try(:first).present? %>
+                  <% if ans = r.object.question.answers.select{ |a| a.field_value.try(:normalize) == r.object.try(:choices).try(:first).try(:normalize) }[0] %>
+                    <%= render "answer", r: r, answer: ans %>
+                  <% else %>
+                    <%= render "write_in", r: r, write_in: r.object.try(:choices).try(:first) %>
+                  <% end %>
+                <% end %>
+              </div></div><!--
+
+           --><div class="droppable-wrapper"><div class="droppable scnd">
+                <% if r.object.try(:choices).try(:second).present? %>
+                  <% if ans = r.object.question.answers.select{ |a| a.field_value.try(:normalize) == r.object.try(:choices).try(:second).try(:normalize) }[0] %>
+                    <%= render "answer", r: r, answer: ans %>
+                  <% else %>
+                    <%= render "write_in", r: r, write_in: r.object.try(:choices).try(:first) %>
+                  <% end %>
+                <% end %>
+              </div></div><!--
+
+           --><div class="droppable-wrapper"><div class="droppable thrd">
+                <% if r.object.try(:choices).try(:third).present? %>
+                  <% if ans = r.object.question.answers.select{ |a| a.field_value.try(:normalize) == r.object.try(:choices).try(:third).try(:normalize)}[0] %>
+                    <%= render "answer", r: r, answer: ans %>
+                  <% else %>
+                    <%= render "write_in", r: r, write_in: r.object.try(:choices).try(:first) %>
+                  <% end %>
+                <% end %>
+              </div></div><!--
+         --><% end %>
+            <%= r.hidden_field :question_id %>
+          <% end %>
+        </div><!-- /line-height: 0 -->
+      </div><!-- /#drop-div-wrapper -->
+
+      <div class="red gradient" style="height: 36px; box-shadow: rgb(153, 153, 153) 0px 5px 10px;">
+        <div class="container" style="text-align: center;">
+          <a id="prev" href="#prev" onclick="return prevQuestion();" class="button" style="display: none; height: 28px; min-width: 120px; margin: 4px 0px; line-height: 28px; background-color: #FFF; border-radius: 6px;">Back</a>
+          <a id="next" href="#next" onclick="return nextQuestion();" class="button" style="display: none; height: 28px; min-width: 120px; margin: 4px 0px; line-height: 28px; background-color: #FFF; border-radius: 6px;">Skip</a>
+        </div>
+      </div>
+    </div><!-- /#sticky-header -->
+
+    <%= content_tag :div, id: "contact-fields", class: "container", style: "display: none;" do %>
+      <br/>
+
+      <h5 style="margin-bottom: 0px;line-height: 1.2;  text-align: center;">Cast your vote by submitting the form below.</h5>
+      <div style="line-height: 1.2; text-align: center;">You'll be provided with a link to share your selections, and you can come back and update them at any time.</div>
+
+      <br/>
+
+      <div class="row">
+        <div class="three columns">
+          <%= form.label :name, "NAME" %>
+          <%= form.text_field :name %>
+          <div class="error-messages"><%= @vote.errors[:name][0] %></div>
+        </div>
+
+        <div class="three columns">
+          <%= form.label :zip, "ZIP" %>
+          <%= form.text_field :zip %>
+          <div class="error-messages"><%= @vote.errors[:zip][0] %></div>
+        </div>
+
+        <div class="three columns">
+          <%= form.label :email, "EMAIL" %>
+          <%= form.text_field :email %>
+          <div class="error-messages"><%= @vote.errors[:email][0] %></div>
+        </div>
+
+        <div class="three columns">
+          <%= form.label :phone, "PHONE (optional)" %>
+          <%= form.text_field :phone, id: :dragPhone %>
+          <div class="error-messages"><%= @vote.errors[:phone][0] %></div>
+
+          <% if @poll.sms_disclaimer.present? %>
+            <div class="height: 0px;"><div id="smsDisclaimer" style="display: none; line-height: 1.4;"><label style="font-size: 80%; font-weight: normal;"><%= form.check_box :sms_opt_in, id: :dragSmsOptIn %> <%= @poll.sms_disclaimer.html_safe %></label></div></div>
+          <% end %>
+        </div>
+      <% end %><!-- /.contact-fields -->
+
+      <br/>
+
+      <div style="text-align: center;"><%= form.submit "Submit", class: "button-blue" %></div>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form_with(model: @vote, url: request.fullpath, local: true) do |form| %>
+      <%= form.fields_for :responses do |r| %>
+        <%= content_tag :div, id: "drag-div-#{ r.object.question_id }", class: "drag-div no-select", style: "display: none;" do %>
+          <% if @referring_vote %>
+            <h5 style="line-height: 1.2; margin-bottom: 0px;"><%= @referring_vote.try(:name).try(:split).try(:first) %> voted for <%= @referring_vote.try(:responses).try(:first).try(:frst_choice) %>. <%= r.object.question.question %></h5>
+            <p style="line-height: 1.2; margin-bottom: 0px;"><span style="color: #777;">Drag and drop your top choices from the list below into the above area.</span></p>
+          <% else %>
+            <h5 style="line-height: 1.2; margin-bottom: 0px;">
+              <%= r.object.question.question %>
+            </h5>
+            <% if @vote.responses[0].choices.try(:first) %>
+              <p style="line-height: 1.2; margin-bottom: 0px;"><span style="color: #777;">Drag and drop your top choices from the list below into the above area.</span></p>
+            <% end %>
+          <% end %>
+
+
+          <div style="line-height: 0;">
+            <% r.object.question.answers.reject{ |a| @vote.responses.select{ |s| s.question_id == r.object.question.id }[0].try(:choices).to_a.map(&:to_s).map(&:normalize).include? a.field_value.try(:normalize) }.shuffle.each do |answer| %><!--
+           --><div class="droppable-wrapper"><div class="droppable">
+                <%= render "answer", r: r, answer: answer %>
+              </div></div><!--
+         --><% end %><!--
+
+         --><div class="droppable-wrapper"><div class="droppable write-in-droppable">
+              <% 3.times do %>
+                <%= render "write_in", r: r, write_in: "" %>
+              <% end %>
+            </div></div><!--
+       --><% end %>
+        </div><!-- /line-height: 0 -->
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="container" style="text-align: center;">
+    <p><br/>Having trouble using this site? <%= link_to "Click here.", "?js=false", data: { turbolinks: false }, style: "border-bottom: dashed 1px;" %></p>
+  </div>
+</div><!-- /.interactive -->
+
+<script>
+  if (getParameterByName("js") != "false") {
+    $(document).on('turbolinks:load', function() {
+      window.questionCount = $(".drag-div").length
+      window.currentQuestion = <% if @vote.errors.any? %>window.questionCount<% else %>0<% end %>;
+      window.initializeDrag();
+      window.initializeStickyHeader();
+    });
+  }
+</script>
+<% elsif @poll.show_results %>
+  <div class="red gradient" style="height: 15px;"></div>
+  <div class="container" style="margin-top: 1em;">
+    <h2 style="text-align: center;">Voting has ended!<br/><%= link_to "Click here to see the final results.", "/#{ [params[:poll], 'results'].reject(&:blank?).join("/") }" %></h2>
+  </div>
+<% else %>
+  <div class="red gradient" style="height: 15px;"></div>
+  <div class="container" style="margin-top: 1em;">
+    <h2 style="text-align: center;">Voting has ended!<br/>Come back soon for the final results.</h2>
+  </div>
+<% end %>

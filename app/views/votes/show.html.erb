@@ -1,0 +1,83 @@
+<div class="red gradient" style="height: 15px;"></div>
+
+<div id="drop-div-wrapper" style="position: relative;">
+  <%= form_with(model: @vote, url: request.fullpath, local: true) do |form| %>
+    <div style="line-height: 0;">
+      <%= form.fields_for :responses, [@vote.responses.first] do |r| %>
+        <%= content_tag :div, id: "drop-div-#{ r.object.question_id }", class: "drop-div no-select" do %><!--
+       --><div class="droppable-wrapper"><div class="droppable frst">
+            <% if r.object.frst_choice.present? %>
+              <% if ans = r.object.question.answers.select{ |a| a.field_value == r.object.frst_choice }[0] %>
+                <%= render "answer", r: r, answer: ans %>
+              <% else %>
+                <%= render "write_in", r: r, write_in: r.object.frst_choice %>
+              <% end %>
+            <% end %>
+          </div></div><!--
+
+       --><div class="droppable-wrapper"><div class="droppable scnd">
+            <% if r.object.scnd_choice.present? %>
+              <% if ans = r.object.question.answers.select{ |a| a.field_value == r.object.scnd_choice }[0] %>
+                <%= render "answer", r: r, answer: ans %>
+              <% else %>
+                <%= render "write_in", r: r, write_in: r.object.scnd_choice %>
+              <% end %>
+            <% end %>
+          </div></div><!--
+
+       --><div class="droppable-wrapper"><div class="droppable thrd">
+            <% if r.object.thrd_choice.present? %>
+              <% if ans = r.object.question.answers.select{ |a| a.field_value == r.object.thrd_choice }[0] %>
+                <%= render "answer", r: r, answer: ans %>
+              <% else %>
+                <%= render "write_in", r: r, write_in: r.object.thrd_choice %>
+              <% end %>
+            <% end %>
+          </div></div><!--
+     --><% end %>
+        <%= r.hidden_field :question_id %>
+
+        <div class="red gradient" style="height: 36px; box-shadow: rgb(153, 153, 153) 0px 5px 10px;"></div>
+      <% end %><%# /form.fields_for :responses %>
+    </div><!-- /line-height: 0 -->
+  <% end %><%# /form_with %>
+</div><!-- /#drop-div-wrapper -->
+
+<h5 style="margin-bottom: 0px; text-align: center;"><strong>SHARE YOUR TOP PICK:</strong></h5>
+
+<p style="text-align: center;">
+  <%= link_to image_tag("facebook.png", alt: "Facebook", style: "border-radius: 6px;"), @vote.facebook_url(request.host, params[:poll]), class: "social", target: "_blank" %>
+  <%= link_to image_tag("twitter.png", alt: "Twitter", style: "border-radius: 6px;"), @vote.twitter_url(request.host, params[:poll]), class: "social", target: "_blank" %><br>
+</p>
+
+<p style="text-align: center;">
+  <strong style="font-size: 18px;">Or, copy and paste this URL:<br /></strong><span style="font-size: 16px;"><%= @vote.share_url("#{request.protocol}#{request.host}", params[:poll]) %></span>
+</p>
+
+<% if @poll.donate_url.present? %>
+  <h5 style="margin-bottom: 0px; text-align: center;"><strong>CONTRIBUTE:</strong></h5>
+
+  <p style="text-align: center;">
+    <%= link_to image_tag("actblue.png", alt: "Contribute via ActBlue", style: "border-radius: 6px;"), @poll.donate_url, target: "_blank" %></strong>
+  </p>
+<% end %>
+
+<% if @poll.show_after_action_results %>
+  <div style="text-align: center; max-width: 500px; margin: 0px auto 12px; line-height: 1; border-top: solid 2px #CCC;">
+    Other Democracy for America members voted for:
+  </div>
+
+  <div style="text-align: center; opacity: 0.8;">
+    <% @poll.cached_after_action_results.first(5).each do |answer, i| %><!--
+   --><div style="display: inline-block; height: 112px; width: 95px; vertical-align: top; line-height: 1;">
+        <% if answer.image.attached? %><%= image_tag answer.image.variant(resize_to_limit: [100, 100]).service_url, style: "height: 60px; width: 60px; border-radius: 25%;" %><% else %><%= image_tag "write-in.png", style: "height: 60px; width: 60px; border-radius: 25%;" %><% end %>
+        <div style="text-transform: uppercase; font-weight: bold; font-size: 80%; letter-spacing: -1;"><%= answer.field_value %></div>
+        <div style="font-size: 80%;"><%= answer.percent %>%</div>
+      </div><!--
+ --><% end %>
+
+    <div style="text-align: center; max-width: 500px; margin: auto;">(Please note above results are unofficial and not yet validated.)</div>
+
+    <br/><br/>
+  </div>
+<% end %>

@@ -1,0 +1,288 @@
+$drag-size: 80;
+$drag-margin: 10;
+$help-text-width: $drag-size + 2 * $drag-margin;
+$help-text-left-offset: ($drag-size - $help-text-width) / 2;
+
+$drag-size-lg: 100;
+$drag-margin-lg: 25;
+$help-text-width-lg: $drag-size-lg + 2 * $drag-margin-lg;
+$help-text-left-offset-lg: ($drag-size-lg - $help-text-width-lg) / 2;
+
+/* STICKY HEADER */
+#sticky-header.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 99;
+  background-color: #FFF;
+}
+
+body.padded {
+  padding-top: 183px;
+}
+
+/* LAYOUT & WHITESPACE */
+.drop-div, .drag-div {
+  max-width: 960px;
+  margin: auto;
+  text-align: center;
+  // line-height: 0;
+}
+
+.drop-div {
+  padding-bottom: 15px;
+
+  .droppable-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: #{ $drag-margin }px #{ $drag-margin }px #{ 2 * $drag-margin }px;
+    border: solid 1px #CCC;
+    border-radius: 25%;
+
+    .droppable {
+      .caption, .write-in-placeholder {
+        display: none;
+      }
+
+      .write-in-input-wrapper input[type="text"] {
+        display: none;
+        // height: 1em !important;
+        // width: #{ $help-text-width }px !important;
+        // padding: 0px;
+        // text-align: center;
+        // text-transform: uppercase;
+        // font-size: 90%;
+        // letter-spacing: -1px;
+        // font-weight: bold;
+        // border: 0px;
+        // background-color: transparent;
+        // pointer-events: none;
+      }
+    }
+  }
+}
+
+.drag-div {
+  .droppable-wrapper {
+    display: inline-block;
+    margin: #{ $drag-margin }px #{ $drag-margin }px #{ 5 * $drag-margin }px;
+
+    .droppable {
+      background-color: #EEE;
+
+      .write-in-value {
+        display: none;
+      }
+    }
+
+    .droppable.ui-droppable-hover {
+      background-color: #CCC;
+    }
+  }
+}
+
+/* INDIVIDUAL CONTAINERS */
+.droppable {
+  position: relative; /* interferes with scrolling? */
+  display: inline-block;
+  height: #{ $drag-size }px;
+  width: #{ $drag-size }px;
+  border-radius: 25%;
+}
+
+.draggable {
+  img {
+    z-index: 10;
+    height: #{ $drag-size }px;
+    width: #{ $drag-size }px;
+    border-radius: 25%;
+  }
+
+  .help-text {
+    position: absolute;
+    width: #{ $help-text-width }px;
+    left: #{ $help-text-left-offset }px;
+    top: 100%;
+    line-height: 1em;
+    font-size: 90%;
+    letter-spacing: -1px;
+
+    .field-value {
+      font-size: 90%;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .caption {
+      font-size: 80%;
+    }
+
+    .write-in-input-wrapper > input[type="text"] {
+      height: 1.5em;
+      width: #{ $help-text-width - 10 }px;
+    }
+  }
+}
+
+/* Kludges to prevent jerky behavior when scrolling */
+.draggable.ui-draggable-dragging { position: fixed !important; }
+.draggable:not(.ui-draggable-dragging) { position: static !important; }
+
+/* 1st, 2nd & 3rd place badges & placeholders */
+.drop-div {
+  .droppable::after {
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    font-size: #{ 0.8 * $drag-size }px;
+    line-height: #{ $drag-size }px;
+    display: block;
+    width: 100%;
+    border-radius: 25%;
+    text-align: center;
+    color: #CCC;
+  }
+
+  .droppable.ui-droppable-hover::after {
+    color: #FFF;
+    background-color: #CCC;
+  }
+
+  .droppable.frst::after { content: "1"; }
+  .droppable.scnd::after { content: "2"; }
+  .droppable.thrd::after { content: "3"; }
+
+  .draggable:not(.ui-draggable-dragging) .handle::before {
+    z-index: 20;
+    line-height: 38px;
+    height: 36px;
+    width: 36px;
+    position: absolute;
+    left: -18px;
+    top: 0px;
+    color: #FFF;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 20px;
+    box-shadow: 0px 2px 10px #555;
+    border: solid 2px #FFF;
+    background-color: #000;
+    background: #0085e5; /* Old browsers */
+    background: -moz-linear-gradient(top,  #0085e5 0%, #002d66 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0085e5), color-stop(100%,#002d66)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #0085e5 0%,#002d66 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #0085e5 0%,#002d66 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #0085e5 0%,#002d66 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #0085e5 0%,#002d66 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0085e5', endColorstr='#002d66',GradientType=0 ); /* IE6-9 */
+  }
+
+  .droppable.frst .draggable:not(.ui-draggable-dragging) .handle::before { content: "1"; }
+  .droppable.scnd .draggable:not(.ui-draggable-dragging) .handle::before { content: "2"; }
+  .droppable.thrd .draggable:not(.ui-draggable-dragging) .handle::before { content: "3"; }
+}
+
+/* Info icon (toggles modal) */
+.draggable {
+  .info {
+    display: none;
+  }
+}
+
+.drag-div {
+  .draggable:not(.ui-draggable-dragging) {
+    .info {
+      position: absolute;
+      right: -4px;
+      top: -4px;
+      display: inline-block;
+      background-color: #A00;
+      color: #A00;
+      font-family: 'Times';
+      font-style: italic;
+      font-weight: bold;
+      margin: 0 auto;
+      width: 22px;
+      border-radius: 4px;
+      box-sizing: border-box;
+      padding: 2px;
+
+      .circle {
+        border-radius: 9px;
+        display: block;
+        width: 18px;
+        height: 18px;
+        margin: auto auto;
+        background-color: white;
+        font-size: 17px;
+        line-height: 19px;
+      }
+    }
+
+    .info:hover {
+      background-color: #F00;
+      color: #F00;
+    }
+  }
+}
+
+/* FX */
+.droppable.ui-droppable-hover > .draggable:not(.ui-draggable-dragging) img { filter: brightness(0.8); }
+.ui-draggable .handle { cursor: move; }
+.ui-draggable-dragging img { box-shadow: 5px 5px 10px #999; }
+.draggable:not(.ui-draggable-dragging) + .draggable {display: none; }
+
+/* RESPONSIVE QUERIES */
+@media (min-width: 550px) {
+  /* LAYOUT & WHITESPACE */
+  .drop-div {
+    .droppable-wrapper {
+      margin: #{ $drag-margin-lg }px;
+
+      .droppable {
+        .write-in-input-wrapper input[type="text"] {
+          font-size: 100%;
+          width: #{ $help-text-width-lg }px !important;
+        }
+      }
+
+      .droppable::after {
+        font-size: #{ 0.8 * $drag-size-lg }px;
+        line-height: #{ $drag-size-lg }px;
+      }
+    }
+  }
+
+  .drag-div {
+    .droppable-wrapper {
+      margin: #{ $drag-margin-lg }px;
+    }
+  }
+
+  /* INDIVIDUAL CONTAINERS */
+  .droppable {
+    height: #{ $drag-size-lg }px;
+    width: #{ $drag-size-lg }px;
+  }
+
+  .draggable {
+    img {
+      height: #{ $drag-size-lg }px;
+      width: #{ $drag-size-lg }px;
+    }
+
+    .help-text {
+      width: #{ $help-text-width-lg }px;
+      left: #{ $help-text-left-offset-lg }px;
+      font-size: 100%;
+
+      .field-value {
+        font-size: 100%;
+      }
+
+      .write-in-input-wrapper > input[type="text"] {
+        width: #{ $help-text-width-lg - 10 }px;
+      }
+    }
+  }
+}

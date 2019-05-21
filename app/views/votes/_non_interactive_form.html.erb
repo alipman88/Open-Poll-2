@@ -47,7 +47,8 @@
       <ul>
         <% question.answers.select{ |answer| answer.show_on_ballot }.shuffle.each do |answer| %>
           <li>
-            <%= link_to [answer.field_value, answer.caption].reject(&:blank?).join(", "), "/#{ @poll.slug }/answers/#{ answer.id }", target: "_blank" %>
+            <strong><%= [answer.field_value, answer.caption].reject(&:blank?).join(", ") %></strong>
+            <% if answer.description.present? %><%= simple_format answer.description %><% end %>
           </li>
         <% end %>
       </ul>

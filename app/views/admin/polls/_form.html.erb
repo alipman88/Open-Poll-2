@@ -67,6 +67,11 @@
   <h5>After-action & Sharing</h5>
 
   <div class="field">
+    <%= form.check_box :show_after_action_results %>
+    <%= form.label :show_after_action_results %>
+  </div>
+
+  <div class="field">
     <%= form.label :donate_url %>
     <%= form.text_field :donate_url %>
   </div>

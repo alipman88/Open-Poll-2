@@ -1,0 +1,11 @@
+<div class="draggable">
+  <div class="handle">
+    <%= image_tag "write-in.png" %>
+  </div>
+
+  <div class="help-text">
+    <div class="field-value write-in-placeholder">Your write-in</div>
+    <div class="write-in-input-wrapper"><%= r.text_field :choices, multiple: true, value: write_in, class: "write-in choice" %></div>
+    <div class="field-value write-in-value"><%= write_in %></div>
+  </div>
+</div>

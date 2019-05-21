@@ -1,0 +1,18 @@
+<div id="drag<%= answer.id %>" class="draggable">
+  <div class="handle">
+    <% if answer.image.attached? %><%= image_tag answer.image.variant(resize_to_limit: [100, 100]).service_url %><% else %><%= image_tag "write-in.png" %><% end %>
+  </div>
+
+  <div class="help-text">
+    <div class="caption"><%= answer.caption %></div>
+    <div class="field-value"><%= answer.field_value %></div>
+  </div>
+
+  <%= r.hidden_field :choices, multiple: true, value: answer.field_value, class: "choice" %>
+
+  <% if answer.description.present? %>
+    <%= link_to "/#{ @poll.slug }/answers/#{ answer.id }", remote: true, class: "info" do %>
+      <span class="circle">i</span>
+    <% end %>
+  <% end %>
+</div>

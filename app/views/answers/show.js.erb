@@ -1,0 +1,7 @@
+$("#modalVote").text("Select <%= j @answer.field_value.to_s.html_safe %>");
+$("#modalVote").attr("onclick", "manualVote( $('#drag<%= @answer.id %>') ); hideModal(); return false;");
+$("#modalTitle").html("<%= j [@answer.field_value, @answer.caption].reject(&:blank?).join(', ').html_safe %>");
+$("#modalImage").html("<% if @answer.image.attached? %><%= j image_tag @answer.image.variant(resize_to_limit: [100, 100]) %><% end %>");
+$("#modalContent").html("<%= j embed_videos simple_format @answer.description.to_s.html_safe %>");
+$("a.overlay").attr("href", '#').show();
+$("#modal").animate({top: "5%"});

@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_18_230123) do
+ActiveRecord::Schema.define(version: 2019_05_19_155838) do
 
-  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2019_05_18_230123) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2019_05_18_230123) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "answers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "answers", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.bigint "question_id", null: false
     t.string "field_value"
     t.string "caption"
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 2019_05_18_230123) do
     t.index ["question_id"], name: "index_answers_on_question_id"
   end
 
-  create_table "domains", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "domains", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.string "domain"
     t.string "slug"
     t.datetime "created_at", precision: 6, null: false
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 2019_05_18_230123) do
     t.index ["domain"], name: "index_domains_on_domain"
   end
 
-  create_table "polls", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "polls", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.string "slug"
     t.string "title"
     t.string "subtitle"
@@ -83,7 +83,7 @@ ActiveRecord::Schema.define(version: 2019_05_18_230123) do
     t.index ["slug"], name: "index_polls_on_slug"
   end
 
-  create_table "questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "questions", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.bigint "poll_id", null: false
     t.integer "position", limit: 1
     t.string "slug"
@@ -96,7 +96,57 @@ ActiveRecord::Schema.define(version: 2019_05_18_230123) do
     t.index ["slug"], name: "index_questions_on_slug"
   end
 
+  create_table "responses", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
+    t.bigint "vote_id", null: false
+    t.bigint "question_id", null: false
+    t.string "frst_choice"
+    t.string "scnd_choice"
+    t.string "thrd_choice"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["frst_choice"], name: "index_responses_on_frst_choice"
+    t.index ["question_id"], name: "index_responses_on_question_id"
+    t.index ["scnd_choice"], name: "index_responses_on_scnd_choice"
+    t.index ["thrd_choice"], name: "index_responses_on_thrd_choice"
+    t.index ["vote_id"], name: "index_responses_on_vote_id"
+  end
+
+  create_table "votes", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
+    t.bigint "poll_id", null: false
+    t.string "email"
+    t.string "name"
+    t.string "zip"
+    t.string "phone"
+    t.boolean "sms_opt_in"
+    t.string "source"
+    t.integer "referring_vote_id"
+    t.string "candidate_slug"
+    t.string "akid"
+    t.integer "actionkit_id"
+    t.string "auth_token"
+    t.boolean "verified_auth_token"
+    t.string "ip_address"
+    t.string "session_cookie"
+    t.string "full_querystring", limit: 1023
+    t.string "i"
+    t.string "extra_1"
+    t.string "extra_2"
+    t.string "extra_3"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_at"], name: "index_votes_on_created_at"
+    t.index ["email"], name: "index_votes_on_email"
+    t.index ["i"], name: "index_votes_on_i"
+    t.index ["ip_address"], name: "index_votes_on_ip_address"
+    t.index ["poll_id"], name: "index_votes_on_poll_id"
+    t.index ["referring_vote_id"], name: "index_votes_on_referring_vote_id"
+    t.index ["verified_auth_token"], name: "index_votes_on_verified_auth_token"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "answers", "questions"
   add_foreign_key "questions", "polls"
+  add_foreign_key "responses", "questions"
+  add_foreign_key "responses", "votes"
+  add_foreign_key "votes", "polls"
 end

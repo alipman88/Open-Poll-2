@@ -56,6 +56,22 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.1, >= 2.1.4)
+    aws-eventstream (1.0.3)
+    aws-partitions (1.165.0)
+    aws-sdk-core (3.53.0)
+      aws-eventstream (~> 1.0, >= 1.0.2)
+      aws-partitions (~> 1.0)
+      aws-sigv4 (~> 1.1)
+      jmespath (~> 1.0)
+    aws-sdk-kms (1.21.0)
+      aws-sdk-core (~> 3, >= 3.53.0)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-s3 (1.40.0)
+      aws-sdk-core (~> 3, >= 3.53.0)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.0)
+    aws-sigv4 (1.1.0)
+      aws-eventstream (~> 1.0, >= 1.0.2)
     bindex (0.7.0)
     bootsnap (1.4.4)
       msgpack (~> 1.0)
@@ -80,6 +96,7 @@ GEM
     jbuilder (2.8.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
+    jmespath (1.4.0)
     liquid (4.0.3)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -192,6 +209,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aws-sdk-s3
   bootsnap (>= 1.4.2)
   byebug
   cocoon

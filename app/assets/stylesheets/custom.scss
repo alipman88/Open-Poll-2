@@ -1,0 +1,106 @@
+/* GENERAL */
+body { font-family: "Montserrat","Gotham","Futura","Avenir","Futura","Trebuchet MS",Helvetica,Arial,sans-serif; }
+a { text-decoration: none; color: inherit; }
+
+/* Larger than tablet */
+@media (min-width: 750px) {
+  body { overflow-y: scroll; }
+  #logo { height: 70px; }
+  #title-wrapper { font-size: 120%; }
+  #smsDisclaimer { position: absolute; }
+}
+
+/* ATOMIC CLASSES */
+.no-select {
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}
+
+/* FORM INPUTS */
+label { color: #0058A0; }
+input[type="text"] { height: 2em; width: 100%; padding: 6px 4px; margin-bottom: 0.25em; border: 1px solid #0058a0; border-radius: 2px; }
+input[type="checkbox"] { margin-bottom: 0px; }
+
+.field_with_errors {
+  label { color: #F00; }
+  input[type="text"] { border: 1px solid #F00; background-color: #FCC; }
+}
+
+.error-messages {
+  line-height: 1.2;
+  color: #F00;
+}
+
+.button,
+button,
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+  font-size: 125%;
+  border-radius: 12px;
+}
+
+.button.button-blue,
+button.button-blue,
+input[type="submit"].button-blue,
+input[type="reset"].button-blue,
+input[type="button"].button-blue {
+  color: #FFF;
+  background-color: #0058A0;
+  border-color: #0058A0; }
+.button.button-blue:hover,
+button.button-blue:hover,
+input[type="submit"].button-blue:hover,
+input[type="reset"].button-blue:hover,
+input[type="button"].button-blue:hover,
+.button.button-blue:focus,
+button.button-blue:focus,
+input[type="submit"].button-blue:focus,
+input[type="reset"].button-blue:focus,
+input[type="button"].button-blue:focus {
+  color: #FFF;
+  opacity: 0.8;
+}
+
+/* LINKS */
+a[href=""] { pointer-events: none; }
+
+/* HEADER */
+#header { padding: 12px 0; line-height: 1.2; text-align: center; }
+#logo { height: 40px; }
+#title-wrapper { font-size: 100%; }
+#title-wrapper > #main-title { font-size: 150%; font-weight: 700; }
+#title-wrapper > #sub-title { font-weight: 200; }
+
+/* Larger than mobile */
+@media (min-width: 400px) {}
+
+/* Larger than phablet (also point when grid becomes active) */
+@media (min-width: 550px) {
+  #logo-wrapper, #title-wrapper { display: inline-block; vertical-align: middle; }
+}
+
+/* Larger than tablet */
+@media (min-width: 750px) {
+  #logo { height: 70px; }
+  #title-wrapper { font-size: 120%; }
+}
+
+/* Larger than desktop */
+@media (min-width: 1000px) {
+  #title-wrapper { font-size: 160%; }
+}
+
+/* Larger than Desktop HD */
+@media (min-width: 1200px) {
+}
+
+/* FOOTER */
+#footer { font-size: 90%; text-align: center; }
+#footer > * { margin-bottom: 18px; }
+#disclaimer, #contact { color: #004090; }
+#disclaimer { padding: 12px; border: 1px solid #004090; }
+#dfa-credit img { width: 200px; }

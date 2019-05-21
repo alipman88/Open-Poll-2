@@ -1,4 +1,4 @@
-<% if @parent || request.fullpath.split('/').last == 's' %>
+<% if @referring_vote || request.fullpath.split('/').last == 's' %>
   <meta property="og:title" content="<%= @poll.vote_share_description %>">
   <meta name="description" property="og:description" content="<%= @poll.vote_share_description %>">
   <meta property="og:url" content='<%= "#{ request.protocol }#{ request.host }#{ request.fullpath.split(/\/s(\/|$)/)[0] }/s" %>'>
