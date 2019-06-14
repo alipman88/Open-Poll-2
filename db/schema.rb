@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 2019_05_19_155838) do
     t.integer "referring_vote_id"
     t.string "candidate_slug"
     t.string "akid"
+    t.string "message_id"
     t.integer "actionkit_id"
     t.string "auth_token"
     t.boolean "verified_auth_token"

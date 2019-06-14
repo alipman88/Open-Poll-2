@@ -28,6 +28,8 @@ class VotesController < ApplicationController
 
     respond_to do |format|
       if @vote.save
+        VoteMailer.with(vote: @vote).confirmation("#{request.protocol}#{request.host}", params[:poll]).deliver_later
+        AbstractJob.perform_later(@vote, :sync_to_actionkit)
         format.html { redirect_to params[:poll] ? "/#{params[:poll]}/v/#{@vote.hash}" : "/v/#{@vote.hash}" }
         format.json { render :show, status: :created, location: @vote }
       else

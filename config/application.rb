@@ -31,5 +31,17 @@ module Railsapp
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.active_job.queue_adapter = ENV['QUEUE_ADAPTER'] || :async
+
+    config.action_mailer.smtp_settings = {
+      user_name: ENV['SMTP_USER_NAME'],
+      password: ENV['SMTP_PASSWORD'],
+      domain: ENV['SMTP_DOMAIN'],
+      address: ENV['SMTP_ADDRESS'],
+      port: 587,
+      authentication: :plain,
+      enable_starttls_auto: true
+    }
   end
 end

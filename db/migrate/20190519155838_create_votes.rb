@@ -11,6 +11,7 @@ class CreateVotes < ActiveRecord::Migration[6.0]
       t.integer :referring_vote_id, index: true
       t.string :candidate_slug
       t.string :akid
+      t.string :message_id
       t.integer :actionkit_id
       t.string :auth_token
       t.boolean :verified_auth_token, index: true
