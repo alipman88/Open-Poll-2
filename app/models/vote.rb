@@ -114,4 +114,33 @@ class Vote < ApplicationRecord
     votes = results.select{ |r| r.field_value == self.top_choice }.first.try(:total) || 0
     (results.select{ |r| r.total > votes }.length + 1).ordinalize
   end
+
+  def sync_to_actionkit
+    if self.poll.actionkit_domain.present? && self.poll.actionkit_page.present?
+      actionfields = self.responses.map{ |r| {
+        "action_#{ r.question.field_name.parameterize.gsub('-', '_') }_frst_choice" => r.frst_choice.to_s,
+        "action_#{ r.question.field_name.parameterize.gsub('-', '_') }_scnd_choice" => r.scnd_choice.to_s,
+        "action_#{ r.question.field_name.parameterize.gsub('-', '_') }_thrd_choice" => r.thrd_choice.to_s
+      } }.reduce({}, :merge)
+
+      body = {
+        page: self.poll.actionkit_page,
+        name: self.name,
+        email: self.email,
+        zip: self.zip,
+        phone: self.phone,
+        action_sms_opt_in: self.sms_opt_in,
+        action_provided_mobile_phone: self.phone,
+        action_vote_id: self.id,
+        referring_akid: self.akid,
+        source: self.source
+      }.merge(actionfields)
+
+      result = HTTParty.get("https://#{ self.poll.actionkit_domain }/act?#{ body.to_query }")
+      action_id = CGI::parse(result.request.last_uri.to_s.split('?')[1])['action_id'][0]
+      self.update_column(:actionkit_id, action_id)
+
+      return action_id
+    end
+  end
 end
