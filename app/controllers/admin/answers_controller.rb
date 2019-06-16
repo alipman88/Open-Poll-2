@@ -1,6 +1,4 @@
-class Admin::AnswersController < ApplicationController
-  http_basic_authenticate_with name: ENV['ADMIN_USER'], password: ENV['ADMIN_PASSWORD']
-  layout 'admin'
+class Admin::AnswersController < Admin::AdminController
   before_action :set_poll
   before_action :set_question, only: [:new,:edit, :update, :destroy]
   before_action :set_answer, only: [:edit, :update, :destroy]

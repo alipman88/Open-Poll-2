@@ -1,6 +1,4 @@
-class Admin::PollsController < ApplicationController
-  http_basic_authenticate_with name: ENV['ADMIN_USER'], password: ENV['ADMIN_PASSWORD']
-  layout 'admin'
+class Admin::PollsController < Admin::AdminController
   before_action :set_poll, only: [:show, :edit, :update, :destroy]
 
   # GET /polls
@@ -67,7 +65,7 @@ class Admin::PollsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_poll
-      @poll = Poll.find(params[:id])
+      @poll = Poll.find(params[:poll_id] || params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

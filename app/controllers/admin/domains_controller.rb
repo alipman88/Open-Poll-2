@@ -1,6 +1,4 @@
-class Admin::DomainsController < ApplicationController
-  http_basic_authenticate_with name: ENV['ADMIN_USER'], password: ENV['ADMIN_PASSWORD']
-  layout 'admin'
+class Admin::DomainsController < Admin::AdminController
   before_action :set_domain, only: [:show, :edit, :update, :destroy]
 
   # GET /domains

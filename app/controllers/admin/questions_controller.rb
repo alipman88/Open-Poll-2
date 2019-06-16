@@ -1,6 +1,4 @@
-class Admin::QuestionsController < ApplicationController
-  http_basic_authenticate_with name: ENV['ADMIN_USER'], password: ENV['ADMIN_PASSWORD']
-  layout 'admin'
+class Admin::QuestionsController < Admin::AdminController
   before_action :set_poll
 
   def index
