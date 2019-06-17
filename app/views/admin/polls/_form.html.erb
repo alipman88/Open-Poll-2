@@ -31,6 +31,7 @@
   <div class="field">
     <%= form.label :logo %>
     <%= form.file_field :logo %>
+    <div><%= image_tag(poll.logo, style: "max-width: 200px; background-color: #777;") if poll.logo.attached? %></div>
   </div>
 
   <div class="field">
@@ -79,6 +80,12 @@
   <div class="field">
     <%= form.label :twitter_message %>
     <%= form.text_field :twitter_message %>
+  </div>
+
+  <div class="field">
+    <%= form.label :share_image %>
+    <%= form.file_field :share_image %>
+    <div><%= image_tag(poll.share_image, style: "max-width: 600px;") if poll.share_image.attached? %></div>
   </div>
 
   <div class="field">
