@@ -7,7 +7,7 @@
         <%= content_tag :div, id: "drop-div-#{ r.object.question_id }", class: "drop-div no-select" do %><!--
        --><div class="droppable-wrapper"><div class="droppable frst">
             <% if r.object.frst_choice.present? %>
-              <% if ans = r.object.question.answers.select{ |a| a.field_value == r.object.frst_choice }[0] %>
+              <% if ans = @poll.questions.map{ |q| q.answers }.flatten.select{ |a| a.field_value == r.object.frst_choice }[0] %>
                 <%= render "answer", r: r, answer: ans %>
               <% else %>
                 <%= render "write_in", r: r, write_in: r.object.frst_choice %>
@@ -17,7 +17,7 @@
 
        --><div class="droppable-wrapper"><div class="droppable scnd">
             <% if r.object.scnd_choice.present? %>
-              <% if ans = r.object.question.answers.select{ |a| a.field_value == r.object.scnd_choice }[0] %>
+              <% if ans = @poll.questions.map{ |q| q.answers }.flatten.select{ |a| a.field_value == r.object.scnd_choice }[0] %>
                 <%= render "answer", r: r, answer: ans %>
               <% else %>
                 <%= render "write_in", r: r, write_in: r.object.scnd_choice %>
@@ -27,7 +27,7 @@
 
        --><div class="droppable-wrapper"><div class="droppable thrd">
             <% if r.object.thrd_choice.present? %>
-              <% if ans = r.object.question.answers.select{ |a| a.field_value == r.object.thrd_choice }[0] %>
+              <% if ans = @poll.questions.map{ |q| q.answers }.flatten.select{ |a| a.field_value == r.object.thrd_choice }[0] %>
                 <%= render "answer", r: r, answer: ans %>
               <% else %>
                 <%= render "write_in", r: r, write_in: r.object.thrd_choice %>
