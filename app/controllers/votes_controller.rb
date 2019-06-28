@@ -19,12 +19,15 @@ class VotesController < ApplicationController
   def create
     @vote = Vote.new(vote_params)
     @vote.poll_id = @poll.id
-    @vote.ip_address = request.remote_ip
-    @vote.session_cookie = session.id
+    @vote.source = params[:source]
+    @vote.referring_vote_id = Vote.find_by_hash(params[:vote_hash]).try(:id)
+    @vote.candidate_slug = params[:candidate_slug]
+    @vote.akid = params[:akid]
     @vote.auth_token = params[:authenticity_token]
     @vote.verified_auth_token = verified_request?
+    @vote.ip_address = request.remote_ip
+    @vote.session_cookie = session.id
     @vote.full_querystring = request.query_string
-    @vote.referring_vote_id = Vote.find_by_hash(params[:vote_hash]).try(:id)
 
     respond_to do |format|
       if @vote.save
