@@ -47,10 +47,7 @@ class Poll < ApplicationRecord
     end
   end
 
-  def crosstabs **opts
-    question_id_1 = opts[:question_id_1] || self.questions.try(:first ).try(:id)
-    question_id_2 = opts[:question_id_2] || self.questions.try(:second).try(:id)
-
+  def crosstabs question_id_1, question_id_2, **opts
     results = ActiveRecord::Base.connection_pool.with_connection { |con| con.exec_query("
       SELECT
         CASE
@@ -80,10 +77,10 @@ class Poll < ApplicationRecord
         COUNT(DISTINCT v.email) AS total
       FROM polls p
       JOIN votes v ON p.id = v.poll_id
-      JOIN questions q1 ON p.id = q1.poll_id
-      JOIN questions q2 ON p.id = q2.poll_id
+      JOIN questions q1 ON p.id = q1.poll_id AND q1.id = #{ question_id_1 || 0 }
       JOIN responses r1 ON v.id = r1.vote_id AND q1.id = r1.question_id
-      JOIN responses r2 ON v.id = r2.vote_id AND q2.id = r2.question_id
+      LEFT JOIN questions q2 ON p.id = q2.poll_id AND q2.id = #{ question_id_2 || 0 }
+      LEFT JOIN responses r2 ON v.id = r2.vote_id AND q2.id = r2.question_id
       LEFT JOIN answers a11 ON q1.id = a11.question_id AND r1.frst_choice = a11.field_value
       LEFT JOIN answers a12 ON q1.id = a12.question_id AND r1.scnd_choice = a12.field_value
       LEFT JOIN answers a13 ON q1.id = a13.question_id AND r1.thrd_choice = a13.field_value
@@ -95,8 +92,7 @@ class Poll < ApplicationRecord
         p.id = #{ self.id } AND
         (p.end_voting_at IS NULL OR v.created_at <= p.end_voting_at) AND
         w.id IS NULL AND
-        v.i IS NULL AND v.verified_auth_token AND
-        q1.id = #{ question_id_1 || 0 } AND q2.id = #{ question_id_2 || 0 }
+        v.i IS NULL AND v.verified_auth_token
         #{ opts[:extra_1] ? '' : '--' } AND v.extra_1 = '#{ opts[:extra_1] }'
       GROUP BY pry_frst_choice, pry_scnd_choice, pry_thrd_choice, xtb_frst_choice, xtb_scnd_choice, xtb_thrd_choice
     ") }
@@ -157,10 +153,10 @@ class Poll < ApplicationRecord
     json.freeze
   end
 
-  def cached_crosstabs **opts
-    # Rails.cache.delete "polls/#{ self.id }/crosstabs?#{ opts.try(:to_query) }"
-    Rails.cache.fetch_async("polls/#{ self.id }/crosstabs?#{ opts.try(:to_query) }", expires_in: 1.hour, race_condition_ttl: 1.minute) do
-      self.crosstabs(opts)
+  def cached_crosstabs question_id_1, question_id_2, **opts
+    Rails.cache.delete "polls/#{ self.id }/crosstabs/#{ question_id_1 }/#{ question_id_2 }?#{ opts.try(:to_query) }"
+    Rails.cache.fetch_async("polls/#{ self.id }/crosstabs/#{ question_id_1 }/#{ question_id_2 }?#{ opts.try(:to_query) }", expires_in: 1.hour, race_condition_ttl: 1.minute) do
+      self.crosstabs(question_id_1, question_id_2, opts)
     end
   end
 
