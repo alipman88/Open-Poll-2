@@ -29,6 +29,7 @@ gem 'liquid'
 gem 'cocoon'
 gem 'aws-sdk-s3', require: false
 gem 'httparty'
+gem 'demoji'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false

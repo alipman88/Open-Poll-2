@@ -80,6 +80,7 @@ GEM
     cocoon (1.2.12)
     concurrent-ruby (1.1.5)
     crass (1.0.4)
+    demoji (0.0.7)
     dotenv (2.7.2)
     dotenv-rails (2.7.2)
       dotenv (= 2.7.2)
@@ -220,6 +221,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   cocoon
+  demoji
   dotenv-rails
   httparty
   image_processing (~> 1.2)
