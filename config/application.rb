@@ -45,5 +45,8 @@ module Railsapp
     }
 
     config.assets.paths << Rails.root.join("app", "assets", "fonts")
+
+    require "#{Rails.root}/lib/cloudflare_middleware"
+    config.middleware.insert_before(0, Rack::CloudflareMiddleware)
   end
 end
