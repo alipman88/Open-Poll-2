@@ -48,5 +48,7 @@ module Railsapp
 
     require "#{Rails.root}/lib/cloudflare_middleware"
     config.middleware.insert_before(0, Rack::CloudflareMiddleware)
+
+    config.session_store :cookie_store, key: "_open_poll_2_session"
   end
 end
