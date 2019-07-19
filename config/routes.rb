@@ -3,6 +3,9 @@ Rails.application.routes.draw do
     get '' => 'admin#index'
 
     resources :polls do
+      get 'results' => 'results#results'
+      get 'results/:question_id_1' => 'results#results'
+      get 'results/:question_id_1/:question_id_2' => 'results#results'
       resources :answers
 
       resources :questions do
@@ -24,7 +27,9 @@ Rails.application.routes.draw do
     get "#{ slug }vote/:candidate_slug" => 'votes#new'
     post "#{ slug }vote/:candidate_slug" => 'votes#create'
     get "#{ slug }answers/:answer_id" => 'answers#show'
-    get "#{ slug }results" => 'results#show'
+    get "#{ slug }results" => 'results#results'
+    get "#{ slug }results/:question_id" => 'results#results'
+    get "#{ slug }results/:question_id_1/:question_id_2" => 'results#results'
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

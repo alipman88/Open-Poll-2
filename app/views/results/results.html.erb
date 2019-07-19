@@ -1,0 +1,189 @@
+<div class="red gradient" style="height: 15px;"></div>
+
+<% if @admin || @poll.show_results %>
+
+<div class="container">
+  <p style="text-align: center; margin: 1em 0px;"><%= @poll.results_html.html_safe %></p>
+  <h5 style="text-align: center;"><strong><%= @question.question %></strong></h5>
+</div>
+
+<div id="rankedList" class="container no-select" style="display: none;">
+  <% @question.answers.select(&:show_in_results).each do |answer| %>
+    <div id="key-<%= answer.id %>" onclick="window.remove('key-<%= answer.id %>');" data-percent="0" class="row">
+      <div class="image-wrapper"><%= image_tag answer.image.variant(resize_to_limit: [60, 60]).service_url %></div>
+      <div class="bar-wrapper">
+        <div class="percent-bar"></div>
+        <div class="answer-wrapper">
+          <span class="value"><strong><%= answer.field_value %>:</strong></span>
+          <span class="percent">0</span>%
+        </div>
+      </div>
+
+      <% if !params[:question_id_1] || (params[:question_id_1] && params[:question_id_2]) %><div class="crosstabs" style="margin-left: 64px; margin-bottom: 10px;"></div><% end %>
+    </div>
+  <% end %>
+
+  <div id="key-0" onclick="window.remove('key-0');" class="row">
+    <div class="image-wrapper"><%= image_tag "write-in.png" %></div>
+    <div class="bar-wrapper">
+      <div class="percent-bar"></div>
+      <div class="answer-wrapper">
+        <span class="value"><strong>Other:</strong></span>
+        <span class="percent">0</span>%
+      </div>
+    </div>
+
+    <% if !params[:question_id_1] || (params[:question_id_1] && params[:question_id_2]) %><div class="crosstabs" style="margin-left: 64px; margin-bottom: 10px;"></div><% end %>
+  </div>
+</div>
+
+<div id="removed" class="no-select" style="display: none;">
+  <% @question.answers.each do |answer| %>
+    <div id="toggle-key-<%= answer.id %>" class="removed-wrapper" onclick="window.add('key-<%= answer.id %>');" style="display: none;">
+      <div class="image-wrapper"><%= image_tag answer.image.variant(resize_to_limit: [60, 60]).service_url %></div>
+      <div class="answer"><%= answer.field_value %></div>
+    </div>
+  <% end %>
+
+  <div id="toggle-key-0" class="removed-wrapper" onclick="window.add('key-0');" style="display: none;">
+    <div class="image-wrapper"><%= image_tag 'write-in.png' %></div>
+    <div class="answer">Other</div>
+  </div>
+</div>
+
+<style>
+  .collapse > * { display: inline-block; vertical-align: middle; }
+
+  <% unless params[:crosstab_limit] %>
+    @media (min-width: 750px) {
+      .collapse { display: inline-block; padding-right: 18px; }
+    }
+  <% end %>
+</style>
+
+<script>
+window.lookup = <%= raw @poll.questions.map{ |q| q.answers.map{ |a| [a.id, a.field_value] }.to_h }.inject(&:merge).to_json %>;
+window.lookup[0] = "Other";
+window.runoffResults = <%= raw @crosstabs %>;
+window.removed = {};
+window.removedCount = 0;
+
+window.remove = function(answer) {
+  $('#' + answer).slideUp();
+  $('#toggle-' + answer).css("display", "inline-block");
+  $('#toggle-' + answer).appendTo( $("#removed") );
+  window.removed[answer] = true;
+  window.removedCount++;
+  window.recalculate();
+}
+
+window.add = function(answer) {
+  $('#' + answer).slideDown();
+  $('#toggle-' + answer).css("display", "none");
+  window.removed[answer] = false;
+  window.removedCount--
+  window.recalculate();
+}
+
+window.recalculate = function() {
+  var results = {};
+  var crosstabs = {};
+  var max = 0;
+  var total = 0;
+
+  for (var i = 0; i < window.runoffResults.length; i++) {
+    var picks = window.runoffResults[i];
+
+    for (var j = 0; j < picks['p'].length; j++) {
+      var answer = picks['p'][j];
+
+      if (!window.removed['key-' + answer]) {
+        results[answer] = (results[answer] || 0) + picks['t'];
+        max = Math.max(max, results[answer]);
+        total += picks['t'];
+        j = picks['p'].length;
+
+        crosstabs[answer] = crosstabs[answer] || {};
+
+        <% if params[:question_id_1] && params[:question_id_1] == params[:question_id_2] %>
+        for (var k = 0; picks['c'].length > 0 && k < picks['c'].length; k++) {
+          if (answer != picks['c'][k] && !window.removed['key-' + picks['c'][k]]) {
+            crosstabs[answer][picks['c'][k]] = (crosstabs[answer][picks['c'][k]] || 0) + picks['t'];
+            if (!getParameterByName('top_three')) { k = picks['c'].length; }
+          }
+        }
+        <% else %>
+        var m = getParameterByName('top_three') ? picks['c'].length : 1;
+
+        for (var k = 0; picks['c'].length > 0 && k < m; k++) {
+          crosstabs[answer][picks['c'][k]] = (crosstabs[answer][picks['c'][k]] || 0) + picks['t'];
+        }
+        <% end %>
+      }
+    }
+  }
+
+  for (var primary of Object.keys(crosstabs)) {
+    var arr = [];
+
+    for (var crosstab of Object.keys(crosstabs[primary])) {
+      arr.push([crosstab, crosstabs[primary][crosstab]]);
+    }
+
+    arr = arr.sort(function(a, b) {
+      if (a[0] == 0) { return  1; }
+      if (b[0] == 0) { return -1; }
+      return b[1] - a[1];
+    });
+
+    var target = $("#key-" + primary + " .crosstabs");
+    target.html("");
+
+    for (var i = 0; i < Math.min(<%= params[:crosstab_limit] || 3 %>, arr.length); i++) {
+      var html = target.html();
+      var append = "<div class='collapse'><span class='circled'>" + (i+1) + "</span> <span><strong>" + window.lookup[arr[i][0]] + ":</strong> " + (100 * arr[i][1] / results[primary]).toFixed(2) + "%</span></div>";
+      target.html(html + append);
+    }
+  }
+
+  for (var key in results) {
+    $("#key-" + key).data("percent", results[key]);
+    $("#key-" + key + " .percent").text((100.0 * results[key] / total).toFixed(2));
+    $("#key-" + key + " .percent-bar").animate({"width": (100 * results[key] / max) + "%"});
+  }
+
+  var sortByRank = function(a, b) {
+    var x = parseFloat( $(a).data("percent") );
+    var y = parseFloat( $(b).data("percent") );
+
+    if ( $(a).attr('id') == 'key-0' ) { return  1; }
+    if ( $(b).attr('id') == 'key-0' ) { return -1; }
+    if ( x > y ) { return -1; }
+    if ( x < y ) { return  1; }
+    return 0;
+  }
+
+  var list = $("#rankedList > div").get();
+  list.sort(sortByRank);
+
+  for (var i = 0; i < list.length; i++) {
+    list[i].parentNode.appendChild(list[i]);
+  }
+
+  $("#rankedList").show();
+
+  if ( window.removedCount > 0 ) {
+    $("#removed").slideDown();
+  } else {
+    $("#removed").hide();
+  }
+
+  return results;
+}
+
+recalculate([]);
+</script>
+
+<% else %>
+  <div class="container"><h2 style="text-align: center; margin: 1em 0px;">Come back soon for results!</h2></div>
+<% end %>

@@ -1,0 +1,70 @@
+#rankedList {
+  margin-bottom: 1em;
+
+  .row {
+    position: relative; margin: 4px 0px; cursor: pointer;
+
+    .image-wrapper {
+      position: absolute; left: 0px;
+
+      img { height: 60px; width: 60px; border-radius: 25%; }
+    }
+
+    .bar-wrapper {
+      position:relative; margin-left: 64px; height: 60px;
+
+      .percent-bar { position: absolute; height: 60px; width: 0%; background-color: #ACF; }
+      .answer-wrapper { position: absolute; left: 4px; line-height: 60px; vertical-align: middle; }
+    }
+  }
+
+  .row:hover {
+    .image-wrapper {
+      img { opacity: 0.8; }
+    }
+
+    .bar-wrapper {
+      .percent-bar { background-color: #FAA; }
+    }
+  }
+
+  .circled {
+    display: inline-block;
+    vertical-align: middle;
+    width: 18px;
+    line-height: 18px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: #FFF;
+    background-color:  #0085e5;
+  }
+}
+
+#removed {
+  position: fixed;
+  bottom: 0px;
+  height: 76px;
+  overflow-y: scroll;
+  z-index: 9999;
+  width: 100%;
+  padding: 6px 0px 0px;
+  border-top: 1px solid #CCC;
+  text-align: center;
+  background-color: #FFF;
+
+  .removed-wrapper {
+    height: 76px; width: 112px; text-align: center; vertical-align: top; cursor: pointer; opacity: 0.8;
+
+    .image-wrapper {
+      height: 60px;
+
+      img { height: 60px; width: 60px; border-radius: 25%; }
+    }
+
+    .answer { font-size: 10px; line-height: 12px; }
+  }
+
+  .removed-wrapper:hover { opacity: 1; }
+}
