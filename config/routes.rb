@@ -6,6 +6,9 @@ Rails.application.routes.draw do
       get 'results' => 'results#results'
       get 'results/:question_id_1' => 'results#results'
       get 'results/:question_id_1/:question_id_2' => 'results#results'
+      get 'crosstabs' => 'results#crosstabs'
+      get 'crosstabs/:question_id_1' => 'results#crosstabs'
+      get 'crosstabs/:question_id_1/:question_id_2' => 'results#crosstabs'
       resources :answers
 
       resources :questions do
@@ -30,6 +33,9 @@ Rails.application.routes.draw do
     get "#{ slug }results" => 'results#results'
     get "#{ slug }results/:question_id" => 'results#results'
     get "#{ slug }results/:question_id_1/:question_id_2" => 'results#results'
+    get "#{ slug }crosstabs" => 'results#crosstabs'
+    get "#{ slug }crosstabs/:question_id_1" => 'results#crosstabs'
+    get "#{ slug }crosstabs/:question_id_1/:question_id_2" => 'results#crosstabs'
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

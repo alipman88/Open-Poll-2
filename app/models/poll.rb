@@ -100,9 +100,9 @@ class Poll < ApplicationRecord
     _total = "total".freeze
     total = results.inject(0.0) { |t, row| t + row[_total] }
     lookup = {}
-    json = "["
+    js = "window.runoffResults = ["
 
-    # The following code produces a chunk of JSON. It could be performed via a one-liner .map function,
+    # The following code produces a huge chunk of JavaScript. It could be performed via a one-liner .map function,
     # but to avoid memory bloat we'll do it manually with frozen strings.
 
     pry_frst_choice = 'pry_frst_choice'.freeze
@@ -125,36 +125,36 @@ class Poll < ApplicationRecord
       lookup[row[xtb_frst_choice]] ||= row[xtb_frst_choice].freeze
       lookup[row[xtb_scnd_choice]] ||= row[xtb_scnd_choice].freeze
       lookup[row[xtb_thrd_choice]] ||= row[xtb_thrd_choice].freeze
-      json << _p
+      js << _p
 
       [pry_frst_choice, pry_scnd_choice, pry_thrd_choice].each do |col|
         if row[col]
-          json << lookup[row[col]]
-          json << comma
+          js << lookup[row[col]]
+          js << comma
         end
       end
 
-      json << _c
+      js << _c
 
       [xtb_frst_choice, xtb_scnd_choice, xtb_thrd_choice].each do |col|
         if row[col]
-          json << lookup[row[col]]
-          json << comma
+          js << lookup[row[col]]
+          js << comma
         end
       end
 
-      json << _t
-      json << sprintf(_f, row[_total] / total).freeze
-      json << _z
+      js << _t
+      js << sprintf(_f, row[_total] / total).freeze
+      js << _z
     end
 
-    json << "]"
+    js << "];"
 
-    json.freeze
+    js.freeze
   end
 
   def cached_crosstabs question_id_1, question_id_2, **opts
-    Rails.cache.delete "polls/#{ self.id }/crosstabs/#{ question_id_1 }/#{ question_id_2 }?#{ opts.try(:to_query) }"
+    # Rails.cache.delete "polls/#{ self.id }/crosstabs/#{ question_id_1 }/#{ question_id_2 }?#{ opts.try(:to_query) }"
     Rails.cache.fetch_async("polls/#{ self.id }/crosstabs/#{ question_id_1 }/#{ question_id_2 }?#{ opts.try(:to_query) }", expires_in: 1.hour, race_condition_ttl: 1.minute) do
       self.crosstabs(question_id_1, question_id_2, opts)
     end
