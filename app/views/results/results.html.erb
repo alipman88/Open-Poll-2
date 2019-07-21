@@ -51,6 +51,14 @@
   </div>
 </div>
 
+<div style="text-align: center;">
+  Share these results:
+</div>
+
+<div style="text-align: center;">
+  <%= link_to image_tag("facebook.png", alt: "Facebook", style: "border-radius: 6px;"), "#{ request.protocol }#{ request.host }#{ request.fullpath }", class: "social", target: "_blank" %>
+</div>
+
 <style>
   .collapse > * { display: inline-block; vertical-align: middle; }
 
