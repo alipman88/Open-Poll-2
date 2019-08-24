@@ -49,8 +49,8 @@
   </div>
 
   <div class="field">
-    <%= form.check_box :show_results %>
-    <%= form.label :show_results %>
+    <%= form.label :show_results_at, "Show results at (UTC)" %>
+    <%= form.datetime_select :show_results_at %>
   </div>
 
   <div class="field">

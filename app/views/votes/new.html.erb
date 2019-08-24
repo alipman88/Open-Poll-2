@@ -163,7 +163,7 @@
     });
   }
 </script>
-<% elsif @poll.show_results %>
+<% elsif @poll.show_results? %>
   <div class="red gradient" style="height: 15px;"></div>
   <div class="container" style="margin-top: 1em;">
     <h2 style="text-align: center;">Voting has ended!<br/><%= link_to "Click here to see the final results.", "/#{ [params[:poll], 'results'].reject(&:blank?).join("/") }" %></h2>

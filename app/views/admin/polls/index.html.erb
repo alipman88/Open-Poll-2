@@ -19,7 +19,7 @@
         <td><%= poll.slug %></td>
         <td><%= link_to poll.title, "/#{poll.slug}" %></td>
         <td><%= poll.end_voting_at %></td>
-        <td><%= poll.show_results %></td>
+        <td><%= poll.show_results_at %></td>
         <td>
           <%= link_to 'Edit', edit_admin_poll_path(poll) %> |
           <%= link_to 'Results', admin_poll_path(poll) %> |

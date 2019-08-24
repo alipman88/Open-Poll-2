@@ -163,4 +163,8 @@ class Poll < ApplicationRecord
   def open?
     self.end_voting_at.nil? || Time.now <= self.end_voting_at
   end
+
+  def show_results?
+    self.show_results_at.present? && Time.now >= self.show_results_at
+  end
 end
