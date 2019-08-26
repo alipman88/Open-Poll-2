@@ -17,7 +17,7 @@ class VoteMailer < ApplicationMailer
 
     if @vote.poll.after_action_email_fromline.present? && @vote.poll.after_action_email_subject.present?
       result = mail(to: @vote.email, from: @vote.poll.after_action_email_fromline, subject: subject)
-      @vote.update_column :message_id, result.message_id
+      @vote.update_column :message_id, SecureRandom.uuid
     end
   end
 end
