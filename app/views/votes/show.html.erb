@@ -70,7 +70,7 @@
   <div style="text-align: center; opacity: 0.8;">
     <% @poll.cached_after_action_results.first(5).each do |answer, i| %><!--
    --><div style="display: inline-block; height: 112px; width: 95px; vertical-align: top; line-height: 1;">
-        <% if answer.image.attached? %><%= image_tag answer.image.variant(resize_to_limit: [100, 100]).service_url, style: "height: 60px; width: 60px; border-radius: 25%;" %><% else %><%= image_tag "write-in.png", style: "height: 60px; width: 60px; border-radius: 25%;" %><% end %>
+        <% if answer.image.attached? %><%= image_tag answer.image.variant(resize_to_limit: [100, 100]), style: "height: 60px; width: 60px; border-radius: 25%;" %><% else %><%= image_tag "write-in.png", style: "height: 60px; width: 60px; border-radius: 25%;" %><% end %>
         <div style="text-transform: uppercase; font-weight: bold; font-size: 80%; letter-spacing: -1;"><%= answer.field_value %></div>
         <div style="font-size: 80%;"><%= answer.percent %>%</div>
       </div><!--

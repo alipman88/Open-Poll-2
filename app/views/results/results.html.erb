@@ -10,7 +10,7 @@
 <div id="rankedList" class="container no-select" style="display: none;">
   <% @question.answers.select(&:show_in_results).each do |answer| %>
     <div id="key-<%= answer.id %>" onclick="window.remove('key-<%= answer.id %>');" data-percent="0" class="row">
-      <div class="image-wrapper"><%= image_tag answer.image.variant(resize_to_limit: [60, 60]).service_url %></div>
+      <div class="image-wrapper"><%= image_tag answer.image.variant(resize_to_limit: [60, 60]) %></div>
       <div class="bar-wrapper">
         <div class="percent-bar"></div>
         <div class="answer-wrapper">
@@ -40,7 +40,7 @@
 <div id="removed" class="no-select" style="display: none;">
   <% @question.answers.each do |answer| %>
     <div id="toggle-key-<%= answer.id %>" class="removed-wrapper" onclick="window.add('key-<%= answer.id %>');" style="display: none;">
-      <div class="image-wrapper"><%= image_tag answer.image.variant(resize_to_limit: [60, 60]).service_url %></div>
+      <div class="image-wrapper"><%= image_tag answer.image.variant(resize_to_limit: [60, 60]) %></div>
       <div class="answer"><%= answer.field_value %></div>
     </div>
   <% end %>

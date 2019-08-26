@@ -1,6 +1,6 @@
 <div id="drag<%= answer.id %>" class="draggable">
   <div class="handle">
-    <% if answer.image.attached? %><%= image_tag answer.image.variant(resize_to_limit: [100, 100]).service_url %><% else %><%= image_tag "write-in.png" %><% end %>
+    <% if answer.image.attached? %><%= image_tag answer.image.variant(resize_to_limit: [100, 100]) %><% else %><%= image_tag "write-in.png" %><% end %>
   </div>
 
   <div class="help-text">

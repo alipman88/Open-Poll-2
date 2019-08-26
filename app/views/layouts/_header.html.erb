@@ -2,7 +2,7 @@
   <div id="header" class="container no-select">
     <% if @poll.logo.attached? %>
       <%= link_to @poll.logo_url, id: "logo-wrapper" do %>
-        <%= image_tag @poll.logo.service_url, id: 'logo' %>
+        <%= image_tag @poll.logo, id: 'logo' %>
       <% end %>
     <% end %>
 
