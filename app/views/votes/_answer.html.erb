@@ -1,3 +1,4 @@
+<% wrap ||= false %><% if wrap %><div class="droppable-wrapper"><div class="droppable"><% end %>
 <div id="drag<%= answer.id %>" class="draggable">
   <div class="handle">
     <% if answer.image.attached? %><%= image_tag answer.image.variant(resize_to_limit: [100, 100]) %><% else %><%= image_tag "write-in.png" %><% end %>
@@ -15,4 +16,5 @@
       <span class="circle">i</span>
     <% end %>
   <% end %>
-</div>
+<% %></div>
+<% if wrap %></div></div><% end %>

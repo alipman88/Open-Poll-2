@@ -129,20 +129,15 @@
             <% end %>
           <% end %>
 
-
           <div style="line-height: 0;">
-            <% r.object.question.answers.reject{ |a| @vote.responses.select{ |s| s.question_id == r.object.question.id }[0].try(:choices).to_a.map(&:to_s).map(&:normalize).include? a.field_value.try(:normalize) }.shuffle.each do |answer| %><!--
-           --><div class="droppable-wrapper"><div class="droppable">
-                <%= render "answer", r: r, answer: answer %>
-              </div></div><!--
-         --><% end %><!--
+            <%= render partial: "answer", collection: r.object.question.answers.reject{ |a| @vote.responses.select{ |s| s.question_id == r.object.question.id }[0].try(:choices).to_a.map(&:to_s).map(&:normalize).include? a.field_value.try(:normalize) }.shuffle, as: :answer, locals: { r: r, wrap: true } %>
 
-         --><div class="droppable-wrapper"><div class="droppable write-in-droppable">
+            <div class="droppable-wrapper"><div class="droppable write-in-droppable">
               <% 3.times do %>
                 <%= render "write_in", r: r, write_in: "" %>
               <% end %>
-            </div></div><!--
-       --><% end %>
+            </div></div>
+          <% end %>
         </div><!-- /line-height: 0 -->
       <% end %>
     <% end %>
