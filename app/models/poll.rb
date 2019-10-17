@@ -28,7 +28,7 @@ class Poll < ApplicationRecord
         (
           (v.i IS NULL AND v.verified_auth_token AND s.id IS NULL) OR v.created_at > NOW() - INTERVAL (v.id % 30) MINUTE
         ) AND
-        q.id = #{ question_id || first_question_id || 0 } AND
+        q.id = #{ (question_id || first_question_id).to_i } AND
         a.show_on_ballot = 1 AND
         (p.end_voting_at IS NULL OR v.created_at <= p.end_voting_at)
       GROUP BY a.id
@@ -77,9 +77,9 @@ class Poll < ApplicationRecord
         COUNT(DISTINCT v.email) AS total
       FROM polls p
       JOIN votes v ON p.id = v.poll_id
-      JOIN questions q1 ON p.id = q1.poll_id AND q1.id = #{ question_id_1 || 0 }
+      JOIN questions q1 ON p.id = q1.poll_id AND q1.id = #{ question_id_1.to_i }
       JOIN responses r1 ON v.id = r1.vote_id AND q1.id = r1.question_id
-      LEFT JOIN questions q2 ON p.id = q2.poll_id AND q2.id = #{ question_id_2 || 0 }
+      LEFT JOIN questions q2 ON p.id = q2.poll_id AND q2.id = #{ question_id_2.to_i }
       LEFT JOIN responses r2 ON v.id = r2.vote_id AND q2.id = r2.question_id
       LEFT JOIN answers a11 ON q1.id = a11.question_id AND r1.frst_choice = a11.field_value
       LEFT JOIN answers a12 ON q1.id = a12.question_id AND r1.scnd_choice = a12.field_value
@@ -93,7 +93,7 @@ class Poll < ApplicationRecord
         (p.end_voting_at IS NULL OR v.created_at <= p.end_voting_at) AND
         w.id IS NULL AND
         v.i IS NULL AND v.verified_auth_token
-        #{ opts[:extra_1] ? '' : '--' } AND v.extra_1 = '#{ opts[:extra_1] }'
+        #{ opts[:extra_1] ? '' : '--' } AND v.extra_1 = '#{ opts[:extra_1].to_s.gsub(/[^0-9a-z]/i, '') }'
       GROUP BY pry_frst_choice, pry_scnd_choice, pry_thrd_choice, xtb_frst_choice, xtb_scnd_choice, xtb_thrd_choice
     ") }
 
@@ -154,7 +154,6 @@ class Poll < ApplicationRecord
   end
 
   def cached_crosstabs question_id_1, question_id_2, **opts
-    # Rails.cache.delete "polls/#{ self.id }/crosstabs/#{ question_id_1 }/#{ question_id_2 }?#{ opts.try(:to_query) }"
     Rails.cache.fetch_async("polls/#{ self.id }/crosstabs/#{ question_id_1 }/#{ question_id_2 }?#{ opts.try(:to_query) }", expires_in: 1.hour, race_condition_ttl: 1.minute) do
       self.crosstabs(question_id_1, question_id_2, opts)
     end
